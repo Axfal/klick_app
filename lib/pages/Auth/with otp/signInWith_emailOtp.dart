@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import '../provider/email_authProvider.dart';
+import '../provider/auth_provider.dart';
 import 'otp_screen.dart';
 
 class SignInWithEmailOTP extends StatefulWidget {
@@ -35,7 +35,7 @@ class _SignInWithEmailOTPState extends State<SignInWithEmailOTP> {
                   _buildEmailInputField(),
                   SizedBox(height: 20.h),
                   // ✅ Use Consumer for State Management
-                  Consumer<EmailAuthProvider>(
+                  Consumer<AuthProvider>(
                     builder: (context, emailAuthProvider, child) {
                       return _buildVerifyButton(emailAuthProvider);
                     },
@@ -199,7 +199,7 @@ class _SignInWithEmailOTPState extends State<SignInWithEmailOTP> {
   }
 
   /// **Verify Button**
-  Widget _buildVerifyButton(EmailAuthProvider emailAuthProvider) {
+  Widget _buildVerifyButton(AuthProvider emailAuthProvider) {
     return ElevatedButton(
       onPressed: emailAuthProvider.isLoading
           ? null

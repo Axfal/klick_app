@@ -1,6 +1,11 @@
 import 'package:klik_app/constants/exports.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize SharedPreferences (LocalStorageService)
+  await LocalStorageService().init();
+
   runApp(const MyApp());
 }
 
@@ -13,7 +18,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => BannerProvider()),
         ChangeNotifierProvider(create: (_) => SearchBarProvider()),
-        ChangeNotifierProvider(create: (_) => EmailAuthProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
@@ -32,4 +37,9 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class GlobalVariables {
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+  GlobalKey<ScaffoldMessengerState>();
 }

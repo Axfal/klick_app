@@ -1,7 +1,8 @@
-import 'package:klik_app/services/auth_service.dart';
-import 'package:flutter/material.dart';
+// ignore_for_file: avoid_print
 
-class EmailAuthProvider with ChangeNotifier {
+import 'package:klik_app/constants/exports.dart';
+
+class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
 
   bool _isLoading = false;
@@ -14,56 +15,53 @@ class EmailAuthProvider with ChangeNotifier {
 
   get user => null;
 
-  /// 🔹 Toggle Password Visibility
+  /// Toggle Password Visibility
   void togglePasswordVisibility() {
     _isPasswordVisible = !_isPasswordVisible;
     notifyListeners();
   }
 
-  /// 🔹 Toggle Confirm Password Visibility
+  /// Toggle Confirm Password Visibility
   void toggleConfirmPasswordVisibility() {
     _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
     notifyListeners();
   }
 
-  /// 🔹 **Set Loading State**
+  /// Set Loading State
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>?> loginUser({
-    String email = "dummy@example.com",
-    String password = "dummy123",
-  }) async {
+  LoginModel? _loginModel;
+  LoginModel? get loginModel => _loginModel;
+
+  Future<void> loginUser(String email, String password) async {
     _setLoading(true);
+    notifyListeners();
+
     try {
       final response = await _authService.signIn(email, password);
-      return {'success': true, 'token': response?['token'] ?? 'dummy-token'};
+
+      if (response != null &&
+          response['success'] == true &&
+          response['message'] != null) {
+        _loginModel = LoginModel.fromJson(response);
+
+        // Save user session if login is successful and user data is present
+        if (_loginModel != null && _loginModel!.user != null) {
+          await LocalStorageService().saveUserSession(_loginModel!);
+        }
+      }
     } catch (error) {
-      return {'success': false, 'message': error.toString()};
+      print("error: $error");
     } finally {
       _setLoading(false);
+      notifyListeners();
     }
   }
 
-  // /// 🔹 **User Login**
-  // Future<Map<String, dynamic>?> loginUser({
-  //   required String email,
-  //   required String password,
-  // }) async {
-  //   _setLoading(true);
-  //   try {
-  //     final response = await _authService.signIn(email, password);
-  //     return response;
-  //   } catch (error) {
-  //     return {'success': false, 'message': error.toString()};
-  //   } finally {
-  //     _setLoading(false);
-  //   }
-  // }
-
-  /// 🔹 **User Sign-up**
+  /// User Sign-up
   Future<Map<String, dynamic>?> signUpUser({
     required String name,
     required String email,

@@ -1,5 +1,5 @@
 import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/pages/Auth/email%20section/signup_withEmail.dart';
+import 'package:klik_app/pages/Auth/signup_withEmail.dart';
 import 'package:klik_app/pages/Auth/signIn_widget.dart';
 import 'package:klik_app/pages/Home/widgets/slider/widgets/rounded_card.dart';
 import 'package:flutter/material.dart';

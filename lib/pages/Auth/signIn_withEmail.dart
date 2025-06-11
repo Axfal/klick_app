@@ -1,13 +1,13 @@
 import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/pages/Auth/email%20section/provider/email_authProvider.dart';
-import 'package:klik_app/pages/Auth/email%20section/signup_withEmail.dart';
-import 'package:klik_app/pages/Auth/email%20section/with%20otp/signInWith_emailOtp.dart';
+import 'package:klik_app/pages/Auth/provider/auth_provider.dart';
+import 'package:klik_app/pages/Auth/signup_withEmail.dart';
+import 'package:klik_app/pages/Auth/with%20otp/signInWith_emailOtp.dart';
 import 'package:klik_app/widgets/social_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import '../../Dashboard/dashboard_page.dart';
+import '../Dashboard/dashboard_page.dart';
 
 class SignInWithEmail extends StatefulWidget {
   const SignInWithEmail({super.key});
@@ -23,7 +23,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
 
   @override
   Widget build(BuildContext context) {
-    final emailAuthProvider = Provider.of<EmailAuthProvider>(context);
+    final emailAuthProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
@@ -218,7 +218,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     );
   }
 
-  Widget _buildLoginButton(EmailAuthProvider emailAuthProvider) {
+  Widget _buildLoginButton(AuthProvider emailAuthProvider) {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1,
       child: ElevatedButton(
@@ -242,7 +242,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     );
   }
 
-  VoidCallback? _handleLogin(EmailAuthProvider emailAuthProvider) {
+  VoidCallback? _handleLogin(AuthProvider emailAuthProvider) {
     return () async {
       if (_formKey.currentState!.validate()) {
         final response = await emailAuthProvider.loginUser(

@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print, prefer_const_declarations, prefer_final_fields, collection_methods_unrelated_type
 import 'package:klik_app/models/cart/get_cart_model.dart';
-import 'package:klik_app/pages/Auth/email%20section/provider/email_authProvider.dart';
+import 'package:klik_app/pages/Auth/provider/auth_provider.dart';
 import 'package:klik_app/services/cart_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -124,7 +124,7 @@ class CartProvider with ChangeNotifier {
     double price,
     double totalPrice,
   ) async {
-    final provider = Provider.of<EmailAuthProvider>(context, listen: false);
+    final provider = Provider.of<AuthProvider>(context, listen: false);
     // await provider.loadUserSession();
     final userId = provider.user!.id;
 
@@ -153,7 +153,7 @@ class CartProvider with ChangeNotifier {
 
   Future<void> getCart(BuildContext context) async {
     setLoading(true);
-    final provider = Provider.of<EmailAuthProvider>(context, listen: false);
+    final provider = Provider.of<AuthProvider>(context, listen: false);
     // await provider.loadUserSession();
     final userId = provider.user!.id;
 

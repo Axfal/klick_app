@@ -7,9 +7,12 @@ export 'package:klik_app/pages/Home/widgets/banner/provider/banner_provider.dart
 export 'package:klik_app/pages/Dashboard/provider/dashboard_provider.dart';
 export 'package:klik_app/pages/Dashboard/dashboard_page.dart';
 export 'package:klik_app/pages/Category/provider/category_provider.dart';
-export 'package:klik_app/pages/Auth/email%20section/provider/email_authProvider.dart';
+export 'package:klik_app/pages/Auth/provider/auth_provider.dart';
 export 'package:klik_app/pages/Cart/provider/cart_provider.dart';
-
 export 'dart:convert';
-
 export 'package:dio/dio.dart';
+export 'package:klik_app/services/auth_service.dart';
+export 'package:klik_app/repository/local_database.dart'
+    show LocalStorageService;
+export 'package:shared_preferences/shared_preferences.dart';
+export 'package:klik_app/pages/Auth/model/login_model.dart';

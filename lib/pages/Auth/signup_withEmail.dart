@@ -1,6 +1,6 @@
 import 'package:klik_app/constants/colors.dart' show AppColors;
-import 'package:klik_app/pages/Auth/email%20section/provider/email_authProvider.dart';
-import 'package:klik_app/pages/Auth/email%20section/signIn_withEmail.dart';
+import 'package:klik_app/pages/Auth/provider/auth_provider.dart';
+import 'package:klik_app/pages/Auth/signIn_withEmail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -29,7 +29,7 @@ class SignupWithEmailState extends State<SignupWithEmail> {
   @override
   Widget build(BuildContext context) {
     print('Building..');
-    final emailAuthProvider = Provider.of<EmailAuthProvider>(context);
+    final emailAuthProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
@@ -230,7 +230,7 @@ class SignupWithEmailState extends State<SignupWithEmail> {
     bool isPassword = false,
     bool isEmail = false,
   }) {
-    return Consumer<EmailAuthProvider>(
+    return Consumer<AuthProvider>(
       builder: (context, provider, child) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h),
@@ -296,7 +296,7 @@ class SignupWithEmailState extends State<SignupWithEmail> {
     );
   }
 
-  Widget _buildSignupButton(BuildContext context, EmailAuthProvider provider) {
+  Widget _buildSignupButton(BuildContext context, AuthProvider provider) {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(

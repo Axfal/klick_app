@@ -4,8 +4,8 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import '../../../Dashboard/dashboard_page.dart';
-import '../provider/email_authProvider.dart';
+import '../../Dashboard/dashboard_page.dart';
+import '../provider/auth_provider.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;
@@ -24,7 +24,7 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: _buildAppBar(),
-      body: Consumer<EmailAuthProvider>(
+      body: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,7 +156,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   /// **Resend OTP Option**
-  Widget _buildResendOption(EmailAuthProvider authProvider) {
+  Widget _buildResendOption(AuthProvider authProvider) {
     return Center(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -184,7 +184,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   /// **Verify OTP Button**
-  Widget _buildSignInButton(EmailAuthProvider authProvider) {
+  Widget _buildSignInButton(AuthProvider authProvider) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primaryColor,
@@ -208,7 +208,7 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   /// **OTP Verification Logic**
-  VoidCallback _verifyOtp(EmailAuthProvider authProvider) {
+  VoidCallback _verifyOtp(AuthProvider authProvider) {
     return () async {
       if (_otpCode.isNotEmpty) {
         final response = await authProvider.verifyOtp(

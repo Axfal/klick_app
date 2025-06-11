@@ -1,11 +1,11 @@
 import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/pages/Auth/email%20section/signup_withEmail.dart';
+import 'package:klik_app/pages/Auth/signup_withEmail.dart';
 import 'package:klik_app/pages/Dashboard/dashboard_page.dart';
 import 'package:klik_app/widgets/social_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'email section/signIn_withEmail.dart';
+import 'signIn_withEmail.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({super.key});
