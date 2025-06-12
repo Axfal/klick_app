@@ -246,26 +246,9 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     };
   }
 
-  // Widget _buildSignupText() {
-  //   return GestureDetector(
-  //     onTap: () => Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => const SignupWithEmail()),
-  //     ),
-  //     child: Text(
-  //       "Sign Up",
-  //       style: TextStyle(
-  //         color: AppColors.blackColor,
-  //         fontSize: 16.sp,
-  //         fontWeight: FontWeight.bold,
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Widget _buildLoginWithEmailOTP() {
     return GestureDetector(
-      onTap: () => Navigator.pushReplacement(
+      onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SignInWithEmailOTP()),
       ),

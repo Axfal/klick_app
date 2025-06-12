@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+
+import 'package:flutter/cupertino.dart';
 import 'package:klik_app/constants/exports.dart';
 
 class SignupWithEmail extends StatefulWidget {
@@ -28,50 +31,56 @@ class SignupWithEmailState extends State<SignupWithEmail> {
       backgroundColor: AppColors.scaffoldColor,
       resizeToAvoidBottomInset: true,
       appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          _buildSecureInfoBanner(),
-          _buildOfferSection(),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(20.w),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    _buildTextField(_nameController, 'Full Name', Icons.person),
-                    _buildTextField(
-                      _emailController,
-                      'Email Address',
-                      Icons.email,
-                      isEmail: true,
-                    ),
-                    _buildPhoneField(),
-                    _buildTextField(
-                      _passwordController,
-                      'Password',
-                      Icons.lock,
-                      isPassword: true,
-                    ),
-                    _buildTextField(
-                      _confirmPasswordController,
-                      'Confirm Password',
-                      Icons.lock,
-                      isPassword: true,
-                    ),
-                    _buildTextField(
-                      _referralController,
-                      'Referral Code (Optional)',
-                      Icons.card_giftcard,
-                    ),
-                    SizedBox(height: 16.h),
-                    _buildSignupButton(context, emailAuthProvider),
-                  ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildSecureInfoBanner(),
+            _buildOfferSection(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(20.w),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _buildTextField(
+                        _nameController,
+                        'Full Name',
+                        Icons.person,
+                      ),
+                      _buildTextField(
+                        _emailController,
+                        'Email Address',
+                        Icons.email,
+                        isEmail: true,
+                      ),
+                      _buildPhoneField(),
+                      _buildTextField(
+                        _passwordController,
+                        'Password',
+                        Icons.lock,
+                        isPassword: true,
+                      ),
+                      _buildTextField(
+                        _confirmPasswordController,
+                        'Confirm Password',
+                        Icons.lock,
+                        isPassword: true,
+                      ),
+                      _buildTextField(
+                        _referralController,
+                        'Referral Code (Optional)',
+                        Icons.card_giftcard,
+                      ),
+                      SizedBox(height: 16.h),
+                      _buildSignupButton(context, emailAuthProvider),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -268,10 +277,8 @@ class SignupWithEmailState extends State<SignupWithEmail> {
                             (controller == _passwordController
                                 ? provider.isPasswordVisible
                                 : provider.isConfirmPasswordVisible)
-                            ? AppColors
-                                  .lightOrangeColor // ✅ Green if visibility is on
-                            : AppColors
-                                  .secondaryColor, // ❌ Default grey if visibility is off
+                            ? AppColors.lightOrangeColor
+                            : AppColors.secondaryColor,
                       ),
                       onPressed: () {
                         if (controller == _passwordController) {
@@ -297,18 +304,18 @@ class SignupWithEmailState extends State<SignupWithEmail> {
             ? null
             : () async {
                 if (!_formKey.currentState!.validate()) {
-                  _showSnackBar(context, 'Please fill all fields correctly');
+                  ToastHelper.showError('Please fill all fields correctly');
                   return;
                 }
 
                 if (_passwordController.text !=
                     _confirmPasswordController.text) {
-                  _showSnackBar(context, 'Passwords do not match');
+                  ToastHelper.showError('Passwords do not match');
                   return;
                 }
 
-                // 🛠️ Call API using provider
-                final response = await provider.signUpUser(
+                await provider.signUpUser(
+                  context,
                   name: _nameController.text.trim(),
                   email: _emailController.text.trim(),
                   phone: "$countryCode${_phoneController.text.trim()}",
@@ -318,37 +325,6 @@ class SignupWithEmailState extends State<SignupWithEmail> {
                   deviceId: '',
                   referralCode: _referralController.text.trim(),
                 );
-
-                // 🔹 Handle API Response
-                if (response == null) {
-                  _showSnackBar(
-                    context,
-                    'Something went wrong. Please try again.',
-                  );
-                  return;
-                }
-
-                // ✅ Direct API Response Check
-                if (response['success'] == true) {
-                  _showSnackBar(
-                    context,
-                    response['message'] ?? 'User registered successfully!',
-                  );
-
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignInWithEmail(),
-                      ),
-                    );
-                  });
-                } else {
-                  _showSnackBar(
-                    context,
-                    response['message'] ?? 'An error occurred',
-                  );
-                }
               },
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -362,21 +338,11 @@ class SignupWithEmailState extends State<SignupWithEmail> {
           padding: EdgeInsets.symmetric(vertical: 16.h),
         ),
         child: provider.isLoading
-            ? const CircularProgressIndicator(color: AppColors.secondaryColor)
+            ? CupertinoActivityIndicator(color: AppColors.secondaryColor)
             : Text(
                 'Sign Up',
                 style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
               ),
-      ),
-    );
-  }
-
-  // ✅ **Helper Function for Showing SnackBars**
-  void _showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Center(child: Text(message)),
-        // backgroundColor: AppColors.lightGreenColor,
       ),
     );
   }

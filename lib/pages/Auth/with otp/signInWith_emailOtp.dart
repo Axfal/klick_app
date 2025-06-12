@@ -1,10 +1,5 @@
-import 'package:klik_app/constants/colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import '../provider/auth_provider.dart';
-import 'otp_screen.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:klik_app/constants/exports.dart';
 
 class SignInWithEmailOTP extends StatefulWidget {
   const SignInWithEmailOTP({super.key});
@@ -34,7 +29,6 @@ class _SignInWithEmailOTPState extends State<SignInWithEmailOTP> {
                   SizedBox(height: 100.h),
                   _buildEmailInputField(),
                   SizedBox(height: 20.h),
-                  // ✅ Use Consumer for State Management
                   Consumer<AuthProvider>(
                     builder: (context, emailAuthProvider, child) {
                       return _buildVerifyButton(emailAuthProvider);
@@ -207,28 +201,7 @@ class _SignInWithEmailOTPState extends State<SignInWithEmailOTP> {
               if (_formKey.currentState!.validate()) {
                 String email = _emailController.text.trim();
 
-                // 🔹 Call API to Request OTP
-                final response = await emailAuthProvider.requestSignInOtp(
-                  email,
-                );
-
-                if (response != null &&
-                    response.containsKey('success') &&
-                    (response['success'] == true ||
-                        response['success'] == "OTP sent to email")) {
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => OtpScreen(email)),
-                    );
-                  });
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(response?['error'] ?? "OTP request failed"),
-                    ),
-                  );
-                }
+                await emailAuthProvider.requestSignInOtp(context, email);
               }
             },
       style: ElevatedButton.styleFrom(
@@ -239,7 +212,7 @@ class _SignInWithEmailOTPState extends State<SignInWithEmailOTP> {
         ),
       ),
       child: emailAuthProvider.isLoading
-          ? const CircularProgressIndicator(color: AppColors.secondaryColor)
+          ? CupertinoActivityIndicator(color: AppColors.whiteColor)
           : Text(
               "Verify",
               style: TextStyle(fontSize: 16.sp, color: AppColors.whiteColor),

@@ -72,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.blackColor.withOpacity(0.9),
+                          color: AppColors.blackColor.withValues(alpha: 0.9),
                           shadows: [
                             Shadow(
                               offset: Offset(0.5, 0.5),
@@ -205,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           if (widget.isGuest)
             SizedBox(
-              height: 60.h, // fixed height for the banner
+              height: 60.h,
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),
                 child: showBanner
@@ -219,10 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         curve: Curves.easeOut,
                         builder: (context, offset, child) {
                           return Transform.translate(
-                            offset: Offset(
-                              offset.dx * 300,
-                              0,
-                            ), // slide from right
+                            offset: Offset(offset.dx * 300, 0),
                             child: child,
                           );
                         },
@@ -237,7 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             vertical: 10.h,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                             borderRadius: BorderRadius.circular(10.r),
                             boxShadow: [
                               BoxShadow(
@@ -269,9 +266,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       )
-                    : const SizedBox.shrink(
-                        key: ValueKey(false),
-                      ), // invisible but keeps space
+                    : const SizedBox.shrink(key: ValueKey(false)),
               ),
             ),
 

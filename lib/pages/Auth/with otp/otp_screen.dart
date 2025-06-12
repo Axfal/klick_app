@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:klik_app/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../Dashboard/dashboard_page.dart';
 import '../provider/auth_provider.dart';
 
+/// OTP Screen for verifying user's email via 6-digit OTP
 class OtpScreen extends StatefulWidget {
   final String email;
 
@@ -24,30 +26,34 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       appBar: _buildAppBar(),
-      body: Consumer<AuthProvider>(
-        builder: (context, authProvider, child) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _buildPartnersText(),
-              _buildSecureInfoBanner(),
-              SizedBox(height: 60.h),
-              _buildHeader(),
-              SizedBox(height: 24.h),
-              _buildOtpFields(),
-              SizedBox(height: 24.h),
-              _buildResendOption(authProvider),
-              const Spacer(),
-              _buildSignInButton(authProvider),
-              SizedBox(height: 35.h),
-            ],
-          );
-        },
+      body: SafeArea(
+        child: Consumer<AuthProvider>(
+          builder: (context, authProvider, child) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                _buildPartnersText(),
+                _buildSecureInfoBanner(),
+                SizedBox(height: 60.h),
+                _buildHeader(),
+                SizedBox(height: 24.h),
+                _buildOtpFields(),
+                SizedBox(height: 24.h),
+                _buildResendOption(authProvider),
+                const Spacer(),
+                _buildSignInButton(authProvider),
+                SizedBox(height: 35.h),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
 
-  /// **AppBar**
+  // -------------------------------
+  // AppBar
+  // -------------------------------
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       leading: IconButton(
@@ -64,7 +70,7 @@ class _OtpScreenState extends State<OtpScreen> {
             style: TextStyle(fontSize: 22.sp, color: AppColors.whiteColor),
           ),
           SizedBox(width: 8.w),
-          Container(height: 18.h, width: 1.0.w, color: AppColors.whiteColor),
+          Container(height: 18.h, width: 1.w, color: AppColors.whiteColor),
           SizedBox(width: 8.w),
           SvgPicture.asset(
             'assets/bottom_nav_icons/cart_white.svg',
@@ -76,36 +82,9 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **Header Section**
-  Widget _buildHeader() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "OTP Verification",
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          "Enter the OTP you received on",
-          style: TextStyle(color: AppColors.greyColor, fontSize: 14.sp),
-        ),
-        SizedBox(height: 4.h),
-
-        /// get email from constructor
-        Text(
-          widget.email,
-          style: TextStyle(
-            fontSize: 13.sp,
-            fontWeight: FontWeight.w600,
-            color: AppColors.blackColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  /// **Official Partner Text**
+  // -------------------------------
+  // Partner Info Text
+  // -------------------------------
   Widget _buildPartnersText() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -117,7 +96,9 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **Security Info Banner**
+  // -------------------------------
+  // Secure Info Banner
+  // -------------------------------
   Widget _buildSecureInfoBanner() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
@@ -139,15 +120,44 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **OTP Field**
+  // -------------------------------
+  // OTP Header Section
+  // -------------------------------
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "OTP Verification",
+          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          "Enter the OTP you received on",
+          style: TextStyle(color: AppColors.greyColor, fontSize: 14.sp),
+        ),
+        SizedBox(height: 4.h),
+        Text(
+          widget.email,
+          style: TextStyle(
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.blackColor,
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// OTP Input Fields
+
   Widget _buildOtpFields() {
     return OtpTextField(
       numberOfFields: 6,
       cursorColor: AppColors.greyColor,
       focusedBorderColor: AppColors.secondaryColor,
       enabledBorderColor: AppColors.greyColor,
-
-      fieldWidth: 40.sp,
+      fieldWidth: 45.sp,
       showFieldAsBox: true,
       textStyle: TextStyle(fontSize: 18.sp),
       borderRadius: BorderRadius.circular(10.r),
@@ -155,7 +165,8 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **Resend OTP Option**
+  /// Resend OTP Option
+
   Widget _buildResendOption(AuthProvider authProvider) {
     return Center(
       child: Row(
@@ -168,9 +179,13 @@ class _OtpScreenState extends State<OtpScreen> {
           GestureDetector(
             onTap: authProvider.isLoading
                 ? null
-                : () => authProvider.requestSignInOtp(widget.email),
+                : () => authProvider.verifyOtp(
+                    context,
+                    email: widget.email,
+                    otp: _otpCode,
+                  ),
             child: Text(
-              " Resend Code",
+              "Resend Code",
               style: TextStyle(
                 color: AppColors.orangeColor,
                 fontSize: 12.sp,
@@ -183,7 +198,8 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **Verify OTP Button**
+  /// Verify Button
+
   Widget _buildSignInButton(AuthProvider authProvider) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -195,7 +211,7 @@ class _OtpScreenState extends State<OtpScreen> {
       ),
       onPressed: authProvider.isLoading ? null : _verifyOtp(authProvider),
       child: authProvider.isLoading
-          ? const CircularProgressIndicator(color: AppColors.secondaryColor)
+          ? CupertinoActivityIndicator(color: AppColors.secondaryColor)
           : Text(
               'Verify OTP',
               style: TextStyle(
@@ -207,29 +223,24 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  /// **OTP Verification Logic**
+  /// OTP Verification Logic
+
   VoidCallback _verifyOtp(AuthProvider authProvider) {
     return () async {
       if (_otpCode.isNotEmpty) {
-        final response = await authProvider.verifyOtp(
+        await authProvider.verifyOtp(
+          context,
           email: widget.email,
           otp: _otpCode,
         );
-        if (response?['success'] == true) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()),
-          );
-        } else {
-          _showSnackBar(response?['message'] ?? "Invalid OTP");
-        }
       } else {
         _showSnackBar("Please enter OTP");
       }
     };
   }
 
-  /// **Reusable SnackBar**
+  /// Reusable Snackbar
+
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(
       context,

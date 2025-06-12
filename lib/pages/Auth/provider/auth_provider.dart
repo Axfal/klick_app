@@ -2,6 +2,8 @@
 
 import 'package:klik_app/constants/exports.dart';
 
+import '../with otp/otp_screen.dart';
+
 class AuthProvider with ChangeNotifier {
   final AuthService _authService = AuthService();
 
@@ -59,7 +61,7 @@ class AuthProvider with ChangeNotifier {
         if (_loginModel != null && _loginModel!.user != null) {
           await LocalStorageService().saveUserSession(_loginModel!);
         }
-      } else if (response != null){
+      } else if (response != null) {
         _loginModel = LoginModel.fromJson(response);
         ToastHelper.showError(_loginModel?.error ?? "");
       }
@@ -72,7 +74,8 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// User Sign-up
-  Future<Map<String, dynamic>?> signUpUser({
+  Future<void> signUpUser(
+    context, {
     required String name,
     required String email,
     required String phone,
@@ -83,6 +86,8 @@ class AuthProvider with ChangeNotifier {
     String? referralCode,
   }) async {
     _setLoading(true);
+    notifyListeners();
+
     try {
       final response = await _authService.signUp(
         name: name,
@@ -94,13 +99,25 @@ class AuthProvider with ChangeNotifier {
         deviceId: deviceId,
         referralCode: referralCode,
       );
-      return {'success': true, 'user_id': response?['user_id'] ?? '123'};
+      if (response != null && response['success'] != null) {
+        ToastHelper.showSuccess(response['success']);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const SignInWithEmail()),
+          );
+        });
+      } else {
+        ToastHelper.showSuccess(response!['error']);
+      }
     } catch (error) {
-      return {'success': false, 'message': error.toString()};
+      print("error: $error");
     } finally {
       _setLoading(false);
+      notifyListeners();
     }
   }
+
   //     if (response == null || response.isEmpty) {
   //       return {'success': false, 'message': "Invalid response from server"};
   //     }
@@ -122,59 +139,68 @@ class AuthProvider with ChangeNotifier {
   //   }
   // }
 
-  Future<Map<String, dynamic>?> requestSignInOtp(String email) async {
-    return {'success': true, 'message': 'OTP sent (simulated)'};
+  Future<void> requestSignInOtp(context, String email) async {
+    _setLoading(true);
+    notifyListeners();
+    try {
+      final response = await _authService.requestSignInOtp(email);
+      if (response != null && response['success'] != null) {
+        ToastHelper.showError(response['success']);
+        Future.delayed(const Duration(milliseconds: 500), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => OtpScreen(email)),
+          );
+        });
+      } else {
+        ToastHelper.showError(response!['error']);
+      }
+    } catch (e) {
+      print("error: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
   }
 
-  Future<Map<String, dynamic>?> verifyOtp({
+  Future<void> verifyOtp(
+    context, {
     required String email,
     required String otp,
   }) async {
-    return {'success': true, 'message': 'OTP verified (simulated)'};
+    _setLoading(true);
+    notifyListeners();
+
+    try {
+      final response = await _authService.verifyOtp(email, otp);
+      if (response != null &&
+          response['success'] == true &&
+          response['message'] != null) {
+        _loginModel = LoginModel.fromJson(response);
+
+        ToastHelper.showSuccess(response['message']);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardPage()),
+        );
+
+        if (_loginModel != null && _loginModel!.user != null) {
+          await LocalStorageService().saveUserSession(_loginModel!);
+        }
+      } else if (response != null) {
+        _loginModel = LoginModel.fromJson(response);
+        ToastHelper.showError(_loginModel?.error ?? "");
+      }
+    } catch (e) {
+      print("error: $e");
+    } finally {
+      _setLoading(false);
+      notifyListeners();
+    }
   }
 
-  // /// 🔹 **Request Sign-in OTP**
-  // Future<Map<String, dynamic>?> requestSignInOtp(String email) async {
-  //   _setLoading(true);
-  //   try {
-  //     final response = await _authService.requestSignInOtp(email);
-
-  //     // ✅ Fix: Check if success key is either `true` or contains "OTP sent"
-  //     if (response != null &&
-  //         response.containsKey('success') &&
-  //         (response['success'] == true ||
-  //             response['success'] == "OTP sent to email")) {
-  //       return response;
-  //     }
-
-  //     return {
-  //       'success': false,
-  //       'message': response?['message'] ?? "Unexpected response format",
-  //     };
-  //   } catch (error) {
-  //     return {'success': false, 'message': error.toString()};
-  //   } finally {
-  //     _setLoading(false);
-  //   }
-  // }
-
-  // /// 🔹 **Verify OTP**
-  // Future<Map<String, dynamic>?> verifyOtp({
-  //   required String email,
-  //   required String otp,
-  // }) async {
-  //   _setLoading(true);
-  //   try {
-  //     final response = await _authService.verifyOtp(email, otp);
-  //     return response;
-  //   } catch (error) {
-  //     return {'success': false, 'message': error.toString()};
-  //   } finally {
-  //     _setLoading(false);
-  //   }
-  // }
-
-  /// 🔹 **User Logout**
+  /// User Logout
   Future<Map<String, dynamic>?> logout(String token) async {
     _setLoading(true);
     try {
