@@ -36,7 +36,7 @@ class AuthProvider with ChangeNotifier {
   LoginModel? _loginModel;
   LoginModel? get loginModel => _loginModel;
 
-  Future<void> loginUser(String email, String password) async {
+  Future<void> loginUser(context, String email, String password) async {
     _setLoading(true);
     notifyListeners();
 
@@ -48,10 +48,20 @@ class AuthProvider with ChangeNotifier {
           response['message'] != null) {
         _loginModel = LoginModel.fromJson(response);
 
+        ToastHelper.showSuccess(response['message']);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DashboardPage()),
+        );
+
         // Save user session if login is successful and user data is present
         if (_loginModel != null && _loginModel!.user != null) {
           await LocalStorageService().saveUserSession(_loginModel!);
         }
+      } else if (response != null){
+        _loginModel = LoginModel.fromJson(response);
+        ToastHelper.showError(_loginModel?.error ?? "");
       }
     } catch (error) {
       print("error: $error");

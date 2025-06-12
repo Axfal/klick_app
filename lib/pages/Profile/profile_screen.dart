@@ -1,11 +1,4 @@
-import 'dart:async';
-
-import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/global_widgets/product_card.dart';
-import 'package:klik_app/pages/Home/widgets/slider/custome_carousel.dart';
-import 'package:klik_app/pages/Settings/settings_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:klik_app/constants/exports.dart';
 
 class ProfileScreen extends StatefulWidget {
   final bool isGuest;
@@ -66,17 +59,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       SizedBox(height: 24.h),
                     ],
+                    SizedBox(height: 12.h),
 
                     /// Hot Sale
-                    Text(
-                      "Hot Sale",
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.blackColor,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 8,
+                      ),
+                      child: Text(
+                        "HOT SALE",
+                        style: GoogleFonts.poppins(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.blackColor.withOpacity(0.9),
+                          shadows: [
+                            Shadow(
+                              offset: Offset(0.5, 0.5),
+                              blurRadius: 1,
+                              color: Colors.black12,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(height: 12.h),
                     GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -85,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         crossAxisCount: 2,
                         mainAxisSpacing: 12.h,
                         crossAxisSpacing: 12.w,
-                        childAspectRatio: 0.80,
+                        childAspectRatio: 0.7,
                       ),
                       itemBuilder: (_, index) {
                         return ProductCard(

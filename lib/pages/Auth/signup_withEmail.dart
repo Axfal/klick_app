@@ -1,11 +1,4 @@
-import 'package:klik_app/constants/colors.dart' show AppColors;
-import 'package:klik_app/pages/Auth/provider/auth_provider.dart';
-import 'package:klik_app/pages/Auth/signIn_withEmail.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:provider/provider.dart';
+import 'package:klik_app/constants/exports.dart';
 
 class SignupWithEmail extends StatefulWidget {
   const SignupWithEmail({super.key});

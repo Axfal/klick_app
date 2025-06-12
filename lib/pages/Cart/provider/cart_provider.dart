@@ -155,7 +155,7 @@ class CartProvider with ChangeNotifier {
     setLoading(true);
     final provider = Provider.of<AuthProvider>(context, listen: false);
     // await provider.loadUserSession();
-    final userId = provider.user!.id;
+    final userId = 2; //provider.user!.id;
 
     try {
       GetCartModel response = await _cartServices.getCart(userId);

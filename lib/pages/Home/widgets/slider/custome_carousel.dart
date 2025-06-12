@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:klik_app/pages/Home/widgets/slider/widgets/delivery_time_card.dart';
-import 'package:klik_app/pages/Home/widgets/slider/widgets/login_singup_card.dart';
+import 'package:klik_app/pages/Home/widgets/slider/widgets/logout_login_singup_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,7 +16,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
   int _currentPage = 0;
   late Timer _timer;
 
-  final List<Widget> cards = [const DeliveryInfoCard(), LoginSignupCard()];
+  final List<Widget> cards = [const DeliveryInfoCard(), LogoutLoginSignupCard()];
 
   @override
   void initState() {

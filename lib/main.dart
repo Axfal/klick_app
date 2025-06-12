@@ -3,7 +3,6 @@ import 'package:klik_app/constants/exports.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize SharedPreferences (LocalStorageService)
   await LocalStorageService().init();
 
   runApp(const MyApp());
@@ -29,9 +28,10 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return const MaterialApp(
+          return MaterialApp(
+            scaffoldMessengerKey: GlobalVariables.scaffoldMessengerKey,
             debugShowCheckedModeBanner: false,
-            home: DashboardPage(),
+            home: const SplashScreen(),
           );
         },
       ),
@@ -41,5 +41,5 @@ class MyApp extends StatelessWidget {
 
 class GlobalVariables {
   static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-  GlobalKey<ScaffoldMessengerState>();
+      GlobalKey<ScaffoldMessengerState>();
 }

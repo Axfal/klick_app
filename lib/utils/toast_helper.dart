@@ -1,4 +1,3 @@
-import 'package:education_app/resources/color.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 
@@ -6,7 +5,7 @@ class ToastHelper {
   // Constants for consistent styling
   static const double _margin = 8.0;
   static const double _borderRadius = 8.0;
-  static final Color _infoTextColor = AppColors.textColor;
+  static final Color _infoTextColor = Colors.white;
 
   static void hideCurrentSnackBar() {
     GlobalVariables.scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
@@ -27,9 +26,9 @@ class ToastHelper {
             .textTheme
             .bodyMedium
             ?.copyWith(
-          color: textColor ?? AppColors.whiteColor,
-          fontWeight: FontWeight.w500,
-        ),
+              color: textColor ?? Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
       ),
       backgroundColor: backgroundColor,
       behavior: SnackBarBehavior.floating,
@@ -38,11 +37,12 @@ class ToastHelper {
         borderRadius: BorderRadius.circular(_borderRadius),
       ),
       duration: duration,
-      dismissDirection:
-      isError ? DismissDirection.horizontal : DismissDirection.down,
+      dismissDirection: isError
+          ? DismissDirection.horizontal
+          : DismissDirection.down,
       action: SnackBarAction(
         label: 'Dismiss',
-        textColor: textColor ?? AppColors.whiteColor,
+        textColor: textColor ?? Colors.white,
         onPressed: () {},
       ),
     );
@@ -54,7 +54,7 @@ class ToastHelper {
       GlobalVariables.scaffoldMessengerKey.currentState!.showSnackBar(
         _buildSnackBar(
           message: message,
-          backgroundColor: AppColors.successColor,
+          backgroundColor: Colors.green,
           duration: const Duration(seconds: 3),
         ),
       );
@@ -67,7 +67,7 @@ class ToastHelper {
       GlobalVariables.scaffoldMessengerKey.currentState!.showSnackBar(
         _buildSnackBar(
           message: message,
-          backgroundColor: AppColors.redColor,
+          backgroundColor: Colors.red,
           duration: const Duration(seconds: 5),
           isError: true,
         ),
@@ -81,7 +81,7 @@ class ToastHelper {
       GlobalVariables.scaffoldMessengerKey.currentState!.showSnackBar(
         _buildSnackBar(
           message: message,
-          backgroundColor: AppColors.indigo,
+          backgroundColor: Colors.indigo,
           duration: const Duration(seconds: 4),
           textColor: _infoTextColor,
         ),

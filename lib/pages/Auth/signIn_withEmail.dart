@@ -1,13 +1,5 @@
-import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/pages/Auth/provider/auth_provider.dart';
-import 'package:klik_app/pages/Auth/signup_withEmail.dart';
-import 'package:klik_app/pages/Auth/with%20otp/signInWith_emailOtp.dart';
-import 'package:klik_app/widgets/social_buttons.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import '../Dashboard/dashboard_page.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:klik_app/constants/exports.dart';
 
 class SignInWithEmail extends StatefulWidget {
   const SignInWithEmail({super.key});
@@ -87,10 +79,10 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: AppColors.whiteColor),
-        onPressed: () => Navigator.pop(context),
-      ),
+      // leading: IconButton(
+      //   icon: const Icon(Icons.arrow_back, color: AppColors.whiteColor),
+      //   onPressed: () => Navigator.pop(context),
+      // ),
       automaticallyImplyLeading: false,
       backgroundColor: AppColors.primaryColor,
       title: Row(
@@ -222,9 +214,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     return SizedBox(
       width: MediaQuery.of(context).size.width / 1,
       child: ElevatedButton(
-        onPressed: emailAuthProvider.isLoading
-            ? null
-            : _handleLogin(emailAuthProvider),
+        onPressed: _handleLogin(emailAuthProvider),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryColor,
           padding: EdgeInsets.symmetric(vertical: 12.h),
@@ -233,7 +223,9 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
           ),
         ),
         child: emailAuthProvider.isLoading
-            ? const CircularProgressIndicator(color: AppColors.whiteColor)
+            ? Center(
+                child: CupertinoActivityIndicator(color: AppColors.whiteColor),
+              )
             : Text(
                 "Login",
                 style: TextStyle(fontSize: 14.sp, color: AppColors.whiteColor),
@@ -245,21 +237,11 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
   VoidCallback? _handleLogin(AuthProvider emailAuthProvider) {
     return () async {
       if (_formKey.currentState!.validate()) {
-        final response = await emailAuthProvider.loginUser(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
+        await emailAuthProvider.loginUser(
+          context,
+          _emailController.text.trim(),
+          _passwordController.text.trim(),
         );
-
-        if (response != null && response["success"] == true) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const DashboardPage()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response?["message"] ?? "Login failed")),
-          );
-        }
       }
     };
   }
