@@ -12,7 +12,7 @@ class CustomSearchBar extends StatelessWidget {
     return Consumer<SearchBarProvider>(
       builder: (context, searchProvider, child) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          padding: EdgeInsets.symmetric(horizontal: 2.w),
           child: Row(
             children: [
               /// SCAN ICON BUTTON

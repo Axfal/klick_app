@@ -35,10 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
-      // No appBar property here
       appBar: AppBar(
         backgroundColor: AppColors.cardColor,
-        // const Color.fromARGB(255, 255, 150, 31),
         toolbarHeight: 56.h,
         elevation: 4,
         title: const CustomSearchBar(),
@@ -54,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       _buildHeader(),
                       Positioned(
-                        bottom: -25.h, // Overlaps header by 25 height units
+                        bottom: -25.h,
                         left: 12.w,
                         right: 12.w,
                         child: Container(
@@ -86,10 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 30.h,
-                  ), // Add space to account for the overlap
-                  // Rest of the content
+                  SizedBox(height: 30.h),
                   Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: 12.w,

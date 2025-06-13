@@ -1,14 +1,8 @@
-import 'package:klik_app/global_widgets/Custome_appBar.dart';
-import 'package:klik_app/pages/ProductDetail/widgets/about_product.dart';
-import 'package:klik_app/constants/colors.dart';
-import 'package:klik_app/models/product.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'widgets/image_carousel.dart';
 import 'widgets/ratings_widget.dart';
 import 'widgets/product_info.dart';
 import 'widgets/recommendations.dart';
+import 'package:klik_app/constants/exports.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});

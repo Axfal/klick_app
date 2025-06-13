@@ -1,5 +1,6 @@
 import 'package:klik_app/constants/exports.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => CategoryProvider()),
         ChangeNotifierProvider(create: (_) => HomeBrandProvider()),
+        ChangeNotifierProvider(create: (_) => ProductDetailProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

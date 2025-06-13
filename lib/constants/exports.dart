@@ -44,6 +44,9 @@ export 'package:klik_app/pages/Home/widgets/cards/grid_row.dart';
 export 'package:klik_app/pages/Home/widgets/cards/grocery_row.dart';
 export 'package:klik_app/pages/Home/widgets/flash%20sales/flash_sale_widget.dart';
 export 'package:klik_app/pages/Home/widgets/product_tiles/Product_tiles.dart';
-
-
+export 'package:klik_app/models/product_details_model.dart' show ProductDetailsModel;
+export 'package:klik_app/services/product_detail_service.dart';
+export 'package:klik_app/pages/ProductDetail/widgets/about_product.dart';
+export 'package:klik_app/models/product.dart';
+export 'package:klik_app/pages/ProductDetail/provider/product_detail_provider.dart';
 
