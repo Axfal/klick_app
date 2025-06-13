@@ -1,9 +1,8 @@
-//lib\pages\Category\category_screen.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:klik_app/constants/colors.dart';
 import 'package:klik_app/global_widgets/Custome_appBar.dart';
 import 'package:klik_app/pages/Category/provider/category_provider.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:klik_app/pages/subcategory/grocery_food.dart';
 
@@ -12,62 +11,77 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = context.watch<CategoryProvider>().categories;
+    final provider = context.watch<CategoryProvider>();
+    final categories = provider.categoryModel?.categories ?? [];
 
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
-      appBar: const CustomAppBar(
-        title: 'Categories',
-          showBackButton: false,
-
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-        child: GridView.builder(
-          itemCount: categories.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: 0.73,
-          ),
-          itemBuilder: (context, index) {
-            final item = categories[index];
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GroceryFoodScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    width: 65.w,
-                    height: 65.w,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFF3F3F3),
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(item.image, fit: BoxFit.cover),
-                    ),
-                  ),
+      appBar: const CustomAppBar(title: 'Categories', showBackButton: false),
+      body: provider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+              child: GridView.builder(
+                itemCount: categories.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 16.h,
+                  crossAxisSpacing: 16.w,
+                  childAspectRatio: 0.78,
                 ),
-
-                SizedBox(height: 6.h),
-                Text(
-                  item.title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12.sp),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+                itemBuilder: (context, index) {
+                  final item = categories[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const GroceryFoodScreen(),
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 80.w,
+                          height: 80.w,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade300,
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: ClipOval(
+                            child: Image.network(
+                              item.categoryIcon ?? '',
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  const Icon(Icons.broken_image),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          item.categoryName ?? '',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
     );
   }
 }

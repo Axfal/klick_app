@@ -20,8 +20,10 @@ export 'package:klik_app/utils/toast_helper.dart';
 export 'package:klik_app/constants/colors.dart';
 export 'package:klik_app/pages/Auth/signup_withEmail.dart';
 export 'package:klik_app/pages/Auth/with%20otp/signInWith_emailOtp.dart';
+export 'package:klik_app/services/client/api_client.dart';
 export 'package:klik_app/widgets/social_buttons.dart';
 export 'package:flutter_svg/svg.dart';
+export 'package:klik_app/services/category_service.dart';
 export 'package:flutter_spinkit/flutter_spinkit.dart';
 export 'dart:async';
 export 'package:klik_app/splash_screen.dart';
@@ -34,3 +36,14 @@ export 'package:klik_app/pages/Settings/settings_screen.dart';
 export 'package:intl_phone_field/intl_phone_field.dart';
 export 'package:klik_app/pages/Auth/signIn_widget.dart';
 export 'package:klik_app/pages/Home/widgets/slider/widgets/rounded_card.dart';
+export 'package:klik_app/models/categories_model.dart';
+export 'package:klik_app/pages/Home/widgets/brands/brand_widget.dart';
+export 'package:klik_app/pages/Home/widgets/cards/beauty_card.dart';
+export 'package:klik_app/pages/Home/widgets/cards/deals_card.dart';
+export 'package:klik_app/pages/Home/widgets/cards/grid_row.dart';
+export 'package:klik_app/pages/Home/widgets/cards/grocery_row.dart';
+export 'package:klik_app/pages/Home/widgets/flash%20sales/flash_sale_widget.dart';
+export 'package:klik_app/pages/Home/widgets/product_tiles/Product_tiles.dart';
+
+
+

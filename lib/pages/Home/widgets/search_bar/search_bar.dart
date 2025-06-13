@@ -12,22 +12,27 @@ class CustomSearchBar extends StatelessWidget {
     return Consumer<SearchBarProvider>(
       builder: (context, searchProvider, child) {
         return Container(
-          height: 40.h, // Total preferred height
           padding: EdgeInsets.symmetric(horizontal: 12.w),
-
           child: Row(
             children: [
-              /// SCAN ICON
+              /// SCAN ICON BUTTON
               Container(
-                height: 40.h,
-                width: 40.h,
+                height: 42.h,
+                width: 42.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(12.r),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.15),
+                      blurRadius: 6,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Icon(
                   Icons.qr_code_scanner,
-                  size: 20.sp,
+                  size: 22.sp,
                   color: Colors.black,
                 ),
               ),
@@ -36,24 +41,29 @@ class CustomSearchBar extends StatelessWidget {
               /// SEARCH BAR
               Expanded(
                 child: Container(
-                  height: 40.h,
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  height: 42.h,
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        blurRadius: 6,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
                       /// TEXT FIELD
                       Expanded(
                         child: TextField(
-                          onChanged: (value) {
-                            searchProvider.searchQuery = value;
-                          },
-                          style: TextStyle(fontSize: 12.sp),
+                          onChanged: (value) =>
+                              searchProvider.searchQuery = value,
+                          style: TextStyle(fontSize: 13.sp),
                           decoration: InputDecoration(
-                            hintText: "Search Product...",
+                            hintText: "Search products, brands...",
                             hintStyle: TextStyle(
                               color: AppColors.greyColor,
                               fontSize: 12.sp,
@@ -68,21 +78,25 @@ class CustomSearchBar extends StatelessWidget {
                       /// CAMERA ICON
                       Icon(
                         Icons.camera_alt_outlined,
-                        size: 18.sp,
-                        color: Colors.black,
+                        size: 20.sp,
+                        color: Colors.grey.shade700,
                       ),
-
-                      SizedBox(width: 6.w),
+                      SizedBox(width: 8.w),
 
                       /// SEARCH BUTTON
-                      Container(
-                        height: 28.h,
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.blackColor,
-                          borderRadius: BorderRadius.circular(6.r),
-                        ),
-                        child: Center(
+                      GestureDetector(
+                        onTap: () {
+                          // Trigger search action if needed
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 6.h,
+                            horizontal: 12.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.blackColor,
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
                           child: Text(
                             "Search",
                             style: TextStyle(

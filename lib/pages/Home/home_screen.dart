@@ -1,21 +1,11 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:klik_app/pages/Home/widgets/brands/brand_widget.dart';
-import 'package:klik_app/pages/Home/widgets/cards/beauty_card.dart';
-import 'package:klik_app/pages/Home/widgets/cards/deals_card.dart';
-import 'package:klik_app/pages/Home/widgets/cards/grid_row.dart';
-import 'package:klik_app/pages/Home/widgets/cards/grocery_row.dart';
-import 'package:klik_app/pages/Home/widgets/flash%20sales/flash_sale_widget.dart';
-import 'package:klik_app/pages/Home/widgets/product_tiles/Product_tiles.dart';
-import 'package:klik_app/pages/Home/widgets/slider/custome_carousel.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:klik_app/constants/colors.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:klik_app/constants/exports.dart';
 import 'widgets/cards/promo_row_cards.dart';
 import 'widgets/cards/bottom_feature_cards.dart';
 import 'widgets/banner/banner_widget.dart';
 import 'widgets/search_bar/search_bar.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,7 +16,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => getCategory());
+  }
+
+  void getCategory() async {
+    final categoryProvider = Provider.of<CategoryProvider>(
+      context,
+      listen: false,
+    );
+    await categoryProvider.getCategory();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.scaffoldColor,
       // No appBar property here
@@ -38,79 +44,162 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const CustomSearchBar(),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                _buildHeader(),
-                Positioned(
-                  bottom: -25.h, // Overlaps header by 25 height units
-                  left: 12.w,
-                  right: 12.w,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 5.w,
-                      vertical: 3.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
+      body: (categoryProvider.isLoading)
+          ? Center(child: CupertinoActivityIndicator())
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      _buildHeader(),
+                      Positioned(
+                        bottom: -25.h, // Overlaps header by 25 height units
+                        left: 12.w,
+                        right: 12.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 3.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            '🔥 Limited time offer: Free shipping on orders over Rs.3500! 🔥',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13.sp,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 30.h,
+                  ), // Add space to account for the overlap
+                  // Rest of the content
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 10.h,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        categoryWidget(),
+                        SizedBox(height: 15),
+                        BannerWidget(),
+                        SizedBox(height: 15),
+                        PromoRowCards(),
+                        SizedBox(height: 15),
+                        CustomCarousel(),
+                        SizedBox(height: 10),
+                        BottomFeatureCards(),
+                        SizedBox(height: 10),
+                        GroceryRow(),
+                        SizedBox(height: 10),
+                        BeautyCard(),
+                        SizedBox(height: 10),
+                        GridRow(),
+                        SizedBox(height: 10),
+                        DealsCard(),
+                        SizedBox(height: 10),
+                        FlashSaleWidget(),
+                        SizedBox(height: 10),
+                        ProductTiles(),
+                        SizedBox(height: 10),
+                        BrandWidget(),
                       ],
                     ),
-                    child: Text(
-                      '🔥 Limited time offer: Free shipping on orders over Rs.3500! 🔥',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13.sp,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(height: 30.h), // Add space to account for the overlap
-            // Rest of the content
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  BannerWidget(),
-                  SizedBox(height: 15),
-                  PromoRowCards(),
-                  SizedBox(height: 15),
-                  CustomCarousel(),
-                  SizedBox(height: 10),
-                  BottomFeatureCards(),
-                  SizedBox(height: 10),
-                  GroceryRow(),
-                  SizedBox(height: 10),
-                  BeautyCard(),
-                  SizedBox(height: 10),
-                  GridRow(),
-                  SizedBox(height: 10),
-                  DealsCard(),
-                  SizedBox(height: 10),
-                  FlashSaleWidget(),
-                  SizedBox(height: 10),
-                  ProductTiles(),
-                  SizedBox(height: 10),
-                  BrandWidget(),
                 ],
               ),
             ),
-          ],
-        ),
+    );
+  }
+
+  /// Categories (Instagram-style horizontal status list)
+  Widget categoryWidget() {
+    final categoryProvider = Provider.of<CategoryProvider>(context);
+    final categoryList = categoryProvider.categoryModel?.categories;
+
+    return SizedBox(
+      height: 80.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        itemCount: categoryList?.length ?? 0,
+        separatorBuilder: (context, index) => SizedBox(width: 12.w),
+        itemBuilder: (context, index) {
+          final user = categoryList![index];
+          final iconUrl = user.categoryIcon;
+
+          return Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [Colors.pink, Colors.orange],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 30.r,
+                  backgroundColor: Colors.white,
+                  child: CircleAvatar(
+                    radius: 28.r,
+                    backgroundColor: Colors.grey.shade100,
+                    child: ClipOval(
+                      child: iconUrl == null || iconUrl.isEmpty
+                          ? Icon(
+                              Icons.broken_image,
+                              size: 28.r,
+                              color: Colors.grey,
+                            )
+                          : Image.network(
+                              iconUrl,
+                              fit: BoxFit.cover,
+                              width: 56.r,
+                              height: 56.r,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                    Icons.broken_image,
+                                    size: 16.r,
+                                    color: Colors.grey,
+                                  ),
+                            ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 6.h),
+              SizedBox(
+                width: 60.w,
+                child: Text(
+                  user.categoryName ?? '',
+                  style: TextStyle(fontSize: 11.sp),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
